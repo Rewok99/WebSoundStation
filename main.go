@@ -78,7 +78,7 @@ func logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
-func home_page(w http.ResponseWriter, r *http.Request) {
+func homePage(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFiles("templates/home_page.html")
 	if err != nil {
 		http.Error(w, "Ошибка при загрузке шаблона", http.StatusInternalServerError)
@@ -91,7 +91,7 @@ func home_page(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func login_page(w http.ResponseWriter, r *http.Request) {
+func loginPage(w http.ResponseWriter, r *http.Request) {
 	var errorMsg string
 
 	if r.Method == http.MethodPost {
@@ -122,7 +122,7 @@ func login_page(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func reg_page(w http.ResponseWriter, r *http.Request) {
+func regPage(w http.ResponseWriter, r *http.Request) {
 	var errorMsg string
 
 	if r.Method == http.MethodPost {
@@ -205,7 +205,7 @@ func createUser(email, hashedPassword string) error {
 	return nil
 }
 
-func main_page(w http.ResponseWriter, r *http.Request) {
+func mainPage(w http.ResponseWriter, r *http.Request) {
 	tracks, err := getTracks() // Получаем треки из базы данных
 	if err != nil {
 		http.Error(w, "Ошибка при получении треков", http.StatusInternalServerError)
@@ -297,10 +297,10 @@ func handleRequest() {
 
 // Регистрация всех маршрутов
 func pageHandler() {
-	http.HandleFunc("/", home_page)
-	http.HandleFunc("/login/", login_page)
-	http.HandleFunc("/reg/", reg_page)
-	http.HandleFunc("/main/", authMiddleware(main_page))
+	http.HandleFunc("/", homePage)
+	http.HandleFunc("/login/", loginPage)
+	http.HandleFunc("/reg/", regPage)
+	http.HandleFunc("/main/", authMiddleware(mainPage))
 	http.HandleFunc("/upload-track/", authMiddleware(uploadTrack))
 	http.HandleFunc("/logout/", logout) // Добавляем обработчик выхода
 }
