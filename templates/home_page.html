@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Начальная страница</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/home_styles.css">
+</head>
+<body>
+
+    <div class="wrapper">
+        <a id="main">
+    <header class="container">
+        <span class="logo">SoundStation</span>
+            <nav>
+                <ul>
+                    <li class="active" id = "main_nav"><a href="#main">Главная</a> </li>
+                    <li><a href="#about" id = "about_nav">О нас</a> </li>
+                    <li><a href="#services" id = "serv_nav">Услуги</a></li>
+                    {{if .IsLoggedIn}}
+                    <li class="btn"><a href="/logout/">Выход</a></li>
+                    {{else}}
+                    <li class="btn"><a href="/login/">Вход</a></li>
+                    {{end}}
+                </ul>
+            </nav>
+    </header>
+</a>
+    <div class="hero container">
+        <div class="hero-info">
+            <img src="../static/image/noise.png">
+            <h1>Музыка — это свобода. Так обретите ее!</h1>
+            <p>Добро пожаловать на SoundStation — ваш надежный партнер в мире музыки! Независимо от того, на какой стадии музыкального пути вы находитесь — только начинаете или уже покоряете чарты, — мы предоставим вам все необходимые инструменты для успешного распространения и продвижения вашего творчества. Станьте частью глобальной музыкальной экосистемы вместе с нами!</p>
+            <button class="btn"><a href="/reg/">Регистрация</a></button>
+        </div>
+
+    </div>
+
+        <div class="container tranding">
+            <h3 >Все популярные платформы в одном сервисе</h3>
+            <div class="platforms">
+                <div class="block">
+                    <a href="https://music.yandex.ru/"><img src="../static/image/yandex.png"></a>
+                </div>
+                <div class="block">
+                   <a href="https://music.youtube.com/"> <img src="../static/image/yt.png"></a>
+                </div>
+                <div class="block">
+                   <a href="https://www.spotify.com/"> <img src="../static/image/spotify.png"></a>
+                </div>
+                <div class="block">
+                    <a href="https://music.apple.com/"> <img src="../static/image/apple.png"></a>
+                </div>
+                <div class="block">
+                    <a href="https://music.vk.com/"> <img src="../static/image/vk.png"></a>
+                </div>
+                <div class="block">
+                   <a href="https://zvuk.com/"> <img src="../static/image/zvuk.png"></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container player">
+            <img src="../static/image/player.png">
+            <div class="player-text">
+            <h3>Почему SoundStation?</h3>
+            <p>•Бесплатная дистрибуция для независимых артистов</p>
+                <p>•Десятки платформ для дистрибуции</p>
+                <p>•100% прав и роялти</p>
+                <p>•Ежедневная статистика</p>
+                <p>•Быстрая модерация и поддержка</p>
+            </div>
+        </div>
+
+
+    </div>
+    <a id="about">
+    <div class="features">
+        <div class="container">
+            <img src="../static/image/decor.png">
+            <h3>О нас</h3>
+            <p>Наша команда искренне верит в то, что музыка — это универсальный язык, который должен быть доступен каждому. Мы стремимся к тому, чтобы каждый музыкант, независимо от уровня популярности или опыта, мог легко делиться своим творчеством с миром. Мы создаем платформу, где каждый может найти свое место, а музыка свободно распространяется по всему миру, достигая ушей и сердец слушателей повсюду.</p>
+        </div>
+    </div>
+    </a>
+    <a id="services">
+    <div class="wrapper">
+       <div class="container services">
+           <h3>Услуги</h3>
+           <div class="images">
+               <img src="../static/image/serv01.png" alt="">
+               <img src="../static/image/serv2.png" alt="">
+               <img src="../static/image/serv03.png" alt="">
+           </div>
+           <div class="images">
+               <img src="../static/image/serv04.png" alt="">
+               <img src="../static/image/serv05.png" alt="">
+               <img src="../static/image/serv06.png" alt="">
+           </div>
+       </div>
+    </div>
+    </a>
+
+    <footer>
+      <div class="blocks container">
+          <div>
+              <span class="logo">SoundStation</span>
+              <p>Музыка — это свобода. Так обретите ее!</p>
+          </div>
+          <div>
+              <h4>О нас</h4>
+                  <a href="#services"><p>Услуги</p></a>
+                  <p>Предложения</p>
+          </div>
+          <div>
+              <h4>Контакты</h4>
+              <p>Email: soundstation@gmail.ru</p>
+              <p>+7 (999) 666-11-11</p>
+          </div>
+      </div>
+        <hr>
+        <p>Copyright ® 2024 SoundStation All rights Rcerved</p>
+    </footer>
+</body>
+</html>

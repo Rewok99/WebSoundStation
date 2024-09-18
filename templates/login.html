@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/login_styles.css">
+</head>
+<body>
+<div class="wrapper">
+  <header class="container">
+    <span class="logo"><a href="/">SoundStation</a></span>
+  </header>
+
+  <div class="container login-form">
+    <h1>Вход в аккаунт</h1>
+
+    {{if .ErrorMsg}}
+    <div class="error-message">
+      <p>{{.ErrorMsg}}</p>
+    </div>
+    {{end}}
+
+    <form action="/login/" method="POST">
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="password">Пароль:</label>
+      <input type="password" id="password" name="password" required>
+
+      <div class="button-container">
+        <button type="submit" class="btn">Войти</button>
+      </div>
+    </form>
+    <p>Еще нет аккаунта? <a href="/reg/">Зарегистрируйтесь</a></p>
+  </div>
+</div>
+</body>
+</html>

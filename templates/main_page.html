@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Главная страница</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../static/css/main_styles.css">
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="container">
+    <header class="container">
+      <span class="logo"><a href="/">SoundStation</a></span>
+      <nav>
+        <ul>
+          <li class="nav-el"><a href="#tracks">Релизы</a> </li>
+          <li class="nav-el"><a href="#">Баланс</a> </li>
+          <li class="nav-el"><a href="#support">Поддержка</a></li>
+          <li class="btn"><a href="/logout/">Выход</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="balance-card">
+      <div class="balance-info">
+        <p class="balance-title">Доступные средства</p>
+        <p class="usd-balance">
+          <span class="balance-amount">₽{{printf "%.2f" .RubBalance}}</span> (RUB)
+        </p>
+        <p class="rub-balance">
+          ${{printf "%.2f" .UsdBalance}} (USD)
+        </p>
+      </div>
+      <div class="withdraw-button-container">
+        <button class="withdraw-button"><a href="#withdraw">Вывод средств</a></button>
+      </div>
+    </div>
+
+
+    <div class="main">
+      <div class="container tracks">
+        <h3 id="tracks">Список релизов</h3>
+        <button class="btn">Загрузить</button>
+        <hr>
+        <div class="bd">
+          {{if .Tracks}}
+          <table>
+            <thead>
+            <tr>
+              <th>Название трека</th>
+              <th>Артист</th>
+              <th>Жанр</th>
+              <th>Ссылка на трек</th>
+              <th>Статус</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{range .Tracks}}
+            <tr>
+              <td>{{.TrackName}}</td>
+              <td>{{.ArtistNickname}}</td>
+              <td>{{.Genre}}</td>
+              <td><a href="{{.CloudStorageURL}}" target="_blank">Файлы</a></td>
+              <td>{{.Status}}</td>
+            </tr>
+            {{end}}
+            </tbody>
+          </table>
+          {{else}}
+          <p>Треков пока нет</p>
+          {{end}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="blocks container">
+    <div>
+      <span class="logo">SoundStation</span>
+      <p>Музыка — это свобода. Так обретите ее!</p>
+    </div>
+    <div>
+      <h4>О нас</h4>
+      <p>Услуги</p>
+      <p>Предложения</p>
+    </div>
+    <div>
+      <h4>Контакты</h4>
+      <p>Email: soundstation@gmail.ru</p>
+      <p>+7 (999) 666-11-11</p>
+    </div>
+  </div>
+  <hr>
+  <p>Copyright ® 2024 SoundStation All rights Rcerved</p>
+</footer>
+
+<!-- Модальное окно загрузки трека -->
+<div id="uploadModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Загрузить трек</h3>
+    <form id="uploadForm">
+      <label for="track_name">Трек</label>
+      <input type="text" id="track_name" name="track_name" title="Введите название трека" required>
+
+      <label for="artist_nickname">Артист</label>
+      <input type="text" id="artist_nickname" name="artist_nickname" title="Введите имя артиста" required>
+
+      <label for="genre">Жанр</label>
+      <select id="genre" name="genre" required>
+        <option value="pop">Поп</option>
+        <option value="rock">Рок</option>
+        <option value="hiphop">Хип-хоп</option>
+        <option value="electronic">Электроника</option>
+      </select>
+
+      <label for="cloud_storage_url">Ссылка на облачное хранилище</label>
+      <input type="url" id="cloud_storage_url" name="cloud_storage_url" title="Вставьте ссылку на файл в облаке" required>
+
+      <button type="submit" class="btn">Загрузить</button>
+    </form>
+  </div>
+</div>
+
+<!-- Модальное окно для поддержки -->
+<div id="supportModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Свяжитесь с нами</h3>
+    <form id="supportForm">
+      <label for="support_name">Имя</label>
+      <input type="text" id="support_name" name="support_name" title="Введите ваше имя" required>
+
+      <label for="support_email">Email</label>
+      <input type="email" id="support_email" name="support_email" title="Введите ваш email" required>
+
+      <label for="support_message">Сообщение</label>
+      <textarea id="support_message" name="support_message" rows="4" title="Введите ваше сообщение" required></textarea>
+
+      <button type="submit" class="btn">Отправить</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  // Получаем элементы
+  const uploadModal = document.getElementById('uploadModal');
+  const uploadBtn = document.querySelector('.tracks .btn');
+  const uploadClose = document.getElementsByClassName('close')[0];
+
+  // Когда пользователь нажимает на кнопку "Загрузить", открываем модальное окно
+  uploadBtn.onclick = function() {
+    uploadModal.style.display = 'block';
+  }
+
+  // Когда пользователь нажимает на <span> (x), закрываем модальное окно
+  uploadClose.onclick = function() {
+    uploadModal.style.display = 'none';
+  }
+
+  // Когда пользователь кликает за пределами модального окна, закрываем его
+  window.onclick = function(event) {
+    if (event.target == uploadModal) {
+      uploadModal.style.display = 'none';
+    }
+  }
+
+  // Получаем элементы
+  const supportModal = document.getElementById('supportModal');
+  const supportBtn = document.querySelector('nav .nav-el a[href="#support"]');
+  const supportClose = document.getElementsByClassName('close')[1]; // Второй элемент закрытия для модального окна поддержки
+
+  // Когда пользователь нажимает на ссылку "Поддержка", открываем модальное окно
+  supportBtn.onclick = function(event) {
+    event.preventDefault(); // Отменяем стандартное действие ссылки
+    supportModal.style.display = 'block';
+  }
+
+  // Когда пользователь нажимает на <span> (x), закрываем модальное окно
+  supportClose.onclick = function() {
+    supportModal.style.display = 'none';
+  }
+
+  // Когда пользователь кликает за пределами модального окна, закрываем его
+  window.onclick = function(event) {
+    if (event.target == supportModal) {
+      supportModal.style.display = 'none';
+    }
+  }
+
+  // Обработчик отправки формы поддержки
+  document.getElementById('supportForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Отменяем стандартное поведение формы
+
+    const formData = new FormData(this);
+
+    // Здесь должен быть ваш код для отправки данных на сервер
+    // Например, можно сделать fetch запрос на ваш сервер, где будет настроен endpoint для отправки email
+
+    fetch('/support/', {
+      method: 'POST',
+      body: formData
+    })
+            .then(response => response.text())
+            .then(data => {
+              // Закрыть модальное окно после успешной отправки
+              supportModal.style.display = 'none';
+              // Очистить форму
+              this.reset();
+              alert('Ваше сообщение отправлено!');
+            })
+            .catch(error => console.error('Ошибка отправки сообщения:', error));
+  });
+
+
+
+  document.getElementById('uploadForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Отменяем стандартное поведение формы
+
+    const formData = new FormData(this);
+
+    fetch('/upload-track/', {
+      method: 'POST',
+      body: formData
+    })
+            .then(response => response.text())
+            .then(data => {
+              // Закрыть модальное окно
+              modal.style.display = 'none';
+              // Очистить форму
+              this.reset();
+              // Перезагрузить страницу
+              window.location.reload();
+            })
+            .catch(error => console.error('Ошибка:', error));
+  });
+
+</script>
+
+
+</body>
+</html>

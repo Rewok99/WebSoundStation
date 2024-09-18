@@ -1,0 +1,116 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Rubik", sans-serif;
+    color: #fff;
+    font-size: 18px;
+    overflow-y: hidden;
+}
+
+.logo a{
+    text-decoration: none;
+    color: #fff;
+}
+
+.wrapper{
+    background: linear-gradient(0deg, rgb(16, 0, 43) 0%, rgba(0,0,0,1) 100%);
+    width: 100%;
+    margin: 0;
+    background-size: cover;
+    min-height: 100vh;
+
+}
+
+.container{
+    width: 90%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+header{
+    padding: 50px 0;
+}
+
+.logo{
+    font-size: 29px;
+    font-weight: 800;
+}
+
+.login-form .container{
+    display: flex;
+    align-items: center;
+}
+
+.login-form {
+    color: black;
+    padding: 50px 0;
+    text-align: center;
+    max-width: 400px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 8px;
+
+}
+
+
+.login-form h1 {
+    font-size: 45px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.login-form form {
+    display: inline-block;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.login-form input {
+    width: 300px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.button-container .btn {
+    width: 322px;
+    color: #ffffff;
+    border: 0;
+    transition: all 500ms ease;
+    font-size: 17px;
+    background: #9d4edd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.button-container .btn:hover {
+    background: #5a189a;
+}
+
+
+.login-form p {
+    margin-top: 20px;
+}
+
+.error-message{
+    color: red;
+}
+
+/* Мобильные стили */
+@media (max-width: 768px) {
+    header{
+        margin-top: 100px;
+    }
+}
+
+
