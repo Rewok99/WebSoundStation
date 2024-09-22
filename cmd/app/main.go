@@ -289,20 +289,20 @@ func handleRequest() {
 	pageHandler()
 	staticFileLoader()
 	// Запуск веб-сервера
-	fmt.Println("Starting server on 192.168.0.105:8080...")
-	if err := http.ListenAndServe("192.168.0.105:8080", nil); err != nil {
+	fmt.Println("Starting server on 192.168.0.104:8080...")
+	if err := http.ListenAndServe("192.168.0.104:8080", nil); err != nil {
 		fmt.Println("Server error:", err)
 	}
 }
 
-//для HTTPS
 /*
+//для HTTPS
 func handleRequest() {
 	pageHandler()
 	staticFileLoader()
 	// Запуск веб-сервера с использованием HTTPS
-	fmt.Println("Starting server on https://192.168.0.105:8080...")
-	if err := http.ListenAndServeTLS("192.168.0.105:8080", "https/server.crt", "https/server.key", nil); err != nil {
+	fmt.Println("Starting server on https://192.168.0.104:8080...")
+	if err := http.ListenAndServeTLS("192.168.0.104:8080", "https/server.crt", "https/server.key", nil); err != nil {
 		fmt.Println("Server error:", err)
 	}
 }

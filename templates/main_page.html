@@ -18,7 +18,7 @@
       <nav>
         <ul>
           <li class="nav-el"><a href="#tracks">Релизы</a> </li>
-          <li class="nav-el"><a href="#">Баланс</a> </li>
+          <li class="nav-el"><a href="#balance">Баланс</a> </li>
           <li class="nav-el"><a href="#support">Поддержка</a></li>
           <li class="btn"><a href="/logout/">Выход</a></li>
         </ul>
@@ -244,6 +244,20 @@
             })
             .catch(error => console.error('Ошибка:', error));
   });
+
+
+
+
+  // Получаем элемент баланса и ссылку "Баланс" в меню
+  const balanceCard = document.querySelector('.balance-card');
+  const balanceLink = document.querySelector('nav .nav-el a[href="#balance"]');
+
+  // Переключаем класс 'show' при клике
+  balanceLink.onclick = function(event) {
+    event.preventDefault(); // Отключаем стандартное поведение ссылки
+    balanceCard.classList.toggle('show');
+  };
+
 
 </script>
 

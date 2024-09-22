@@ -335,9 +335,23 @@ table a:hover {
     width: 90%;
     max-width: 1450px;
     min-width: 485px;
-    margin:  auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: auto;
+
+    /* Анимация */
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 1.5s ease, opacity 1.5s ease, transform 1.5s ease;
+    transform: translateY(-20px);
 }
+
+.balance-card.show {
+    max-height: 500px;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
 
 
 .balance-title {
