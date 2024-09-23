@@ -62,27 +62,29 @@ header nav ul li a{
     color: #ffffff;
 }
 
+/*позже сделать перемещение в соответствии с пунктом*/
 header nav ul li.active::after{
     content: '';
     display: block;
-    width: 40px;
+    width: 90px;
     height: 5px;
     background: #9d4edd;
     border-radius: 10px;
     position: relative;
-    top: 10px;
+    top: 5px;
     right: 10px;
 }
 
-header nav ul li:not(.active):not(.btn) a:hover{
-    border-bottom: 5px solid #9d4edd;
+header nav ul li:not(.btn) a:hover{
+    color: #9d4edd;
+    transition: all 0.5s ease;
 }
 
 header nav ul li.btn a{
     background: #9d4edd;
     padding: 9px 17px;
     border-radius: 5px;
-    transition: all 500ms ease;
+    transition: all 0.5s ease;
 }
 
 header nav ul li.btn a:hover{
