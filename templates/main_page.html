@@ -236,7 +236,7 @@
             .then(response => response.text())
             .then(data => {
               // Закрыть модальное окно
-              modal.style.display = 'none';
+              uploadModal.style.display = 'none'; // Здесь исправлено на uploadModal
               // Очистить форму
               this.reset();
               // Перезагрузить страницу
@@ -244,6 +244,7 @@
             })
             .catch(error => console.error('Ошибка:', error));
   });
+
 
 
 
