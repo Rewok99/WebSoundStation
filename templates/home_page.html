@@ -112,8 +112,8 @@
           </div>
           <div>
               <h4>О нас</h4>
-                  <a href="#services"><p>Услуги</p></a>
-                  <p>Предложения</p>
+              <a href="#services"><p>Услуги</p></a>
+              <a href="#" id="openFaqModal">FAQ</a>
           </div>
           <div>
               <h4>Контакты</h4>
@@ -124,5 +124,95 @@
         <hr>
         <p>Copyright ® 2024 SoundStation All rights Rcerved</p>
     </footer>
+
+    <!-- Модальное окно для FAQ -->
+    <div id="faqModal" class="faqModal">
+        <div class="faqModal-content">
+            <span class="close">&times;</span>
+            <h3>Часто задаваемые вопросы</h3>
+
+            <!-- Вопрос 1 -->
+            <div class="faq-item">
+                <button class="accordion">Можно ли удалить релиз с площадок?<span class="arrow">&#9660;</span></button>
+                <div class="panel">
+                    <p>Да. Для этого вы можете обратиться в поддержку.</p>
+                </div>
+            </div>
+
+            <!-- Вопрос 2 -->
+            <div class="faq-item">
+                <button class="accordion">Как понять, что мой релиз одобрен?<span class="arrow">&#9660;</span></button>
+                <div class="panel">
+                    <p>Когда Вы загружаете релиз, он уходит к нам на модерацию. Мы всё проверяем и можем отклонить релиз, написав причину и отправив на доработку. Если релиз одобрен, в таблице будет статус "Опубликовано".</p>
+                </div>
+            </div>
+
+            <!-- Вопрос 3 -->
+            <div class="faq-item">
+                <button class="accordion">Сколько длится модерация?<span class="arrow">&#9660;</span></button>
+                <div class="panel">
+                    <p>Модерация делается до 3-х рабочих дней.</p>
+                </div>
+            </div>
+
+            <!-- Вопрос 4 -->
+            <div class="faq-item">
+                <button class="accordion">Как я могу изменить релиз?<span class="arrow">&#9660;</span></button>
+                <div class="panel">
+                    <p>Если вы допустили ошибку или хотите изменить что-то в релизе вы можете обратиться в поддержку.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    // Открытие и закрытие модального окна FAQ
+    const faqModal = document.getElementById("faqModal");
+    const openFaqModalLink = document.getElementById("openFaqModal");
+    const closeFaqModal = faqModal.querySelector(".close");
+
+    // Открыть модальное окно при клике на ссылку в подвале
+    openFaqModalLink.onclick = function(event) {
+        event.preventDefault(); // Предотвращаем переход по ссылке
+        faqModal.style.display = "block";
+    }
+
+    // Закрыть модальное окно при клике на крестик
+    closeFaqModal.onclick = function() {
+        faqModal.style.display = "none";
+    }
+
+
+    // Логика аккордеона для раскрытия ответов
+    const accordions = document.querySelectorAll(".accordion");
+
+    accordions.forEach(function(accordion) {
+        accordion.addEventListener("click", function() {
+            // Переключение между скрытием и отображением панели
+            const panel = this.nextElementSibling;
+            const arrow = this.querySelector(".arrow");
+
+            // Закрыть все другие панели (чтобы был один открытый вопрос)
+            accordions.forEach(function(otherAccordion) {
+                if (otherAccordion !== accordion) {
+                    otherAccordion.nextElementSibling.style.display = "none";
+                    otherAccordion.querySelector(".arrow").style.transform = "rotate(0deg)";
+                }
+            });
+
+            // Переключить состояние текущего аккордеона
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+                arrow.style.transform = "rotate(0deg)";
+            } else {
+                panel.style.display = "block";
+                arrow.style.transform = "rotate(180deg)";
+            }
+        });
+    });
+</script>
+
+
 </body>
 </html>

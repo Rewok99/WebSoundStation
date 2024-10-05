@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"net/smtp"
 )
 
 var db *sql.DB
@@ -237,12 +238,13 @@ func uploadTrack(w http.ResponseWriter, r *http.Request) {
 		genre := r.FormValue("genre")
 		cloudStorageURL := r.FormValue("cloud_storage_url")
 		status := "Обработка"
+		platforms := r.FormValue("distribution_platforms")
 
 		var userID int = sessionID
 
 		// Вставка данных в базу данных
-		_, err := db.Exec("INSERT INTO tracks (track_name, artist_nickname, genre, cloud_storage_url, user_id, status) VALUES ($1, $2, $3, $4, $5, $6)",
-			trackName, artistNickname, genre, cloudStorageURL, userID, status)
+		_, err := db.Exec("INSERT INTO tracks (track_name, artist_nickname, genre, cloud_storage_url, user_id, status, platforms) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+			trackName, artistNickname, genre, cloudStorageURL, userID, status, platforms)
 		if err != nil {
 			http.Error(w, "Ошибка при добавлении трека", http.StatusInternalServerError)
 			log.Println("Ошибка при вставке трека:", err)
@@ -285,12 +287,68 @@ func getUserBalance(userID int) (float64, float64, error) {
 	return rubBalance, usdBalance, nil
 }
 
+// Функция для отправки email
+func sendEmail(from, replyTo, subject, body string) error {
+	// Настройки SMTP
+	smtpHost := "smtp.gmail.com" //SMTP-сервер
+	smtpPort := "587"
+	smtpUser := "g.erapuff@gmail.com" // почта
+	smtpPass := "zjmo wvce agcd tccd" // пароль
+
+	to := "soundstation78@gmail.com"
+
+	// Формирование сообщения
+	msg := []byte("To: " + to + "\r\n" +
+		"From: " + from + "\r\n" +
+		"Reply-To: " + replyTo + "\r\n" +
+		"Subject: " + subject + "\r\n" +
+		"\r\n" + body + "\r\n")
+
+	// Настройки аутентификации
+	auth := smtp.PlainAuth("", smtpUser, smtpPass, smtpHost)
+
+	// Отправка email
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, smtpUser, []string{to}, msg)
+	if err != nil {
+		log.Println("Ошибка при отправке письма:", err)
+		return err
+	}
+
+	log.Println("Письмо успешно отправлено!")
+	return nil
+}
+
+func supportHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		// Извлекаем данные из формы
+		name := r.FormValue("support_name")
+		email := r.FormValue("support_email")
+		message := r.FormValue("support_message")
+
+		// Формируем тему и тело письма
+		subject := "Запрос поддержки от " + name
+		body := fmt.Sprintf("Имя: %s\nEmail: %s\nСообщение: %s", name, email, message)
+
+		// Отправляем письмо
+		err := sendEmail("g.erapuff@gmail.com", email, subject, body)
+		if err != nil {
+			http.Error(w, "Ошибка при отправке письма", http.StatusInternalServerError)
+			return
+		}
+
+		// Возвращаем успешный ответ
+		fmt.Fprintf(w, "Ваше сообщение успешно отправлено!")
+		return
+	}
+
+}
+
 func handleRequest() {
 	pageHandler()
 	staticFileLoader()
 	// Запуск веб-сервера
 	fmt.Println("Starting server on 192.168.0.104:8080...")
-	if err := http.ListenAndServe("192.168.0.104:8080", nil); err != nil {
+	if err := http.ListenAndServe(":8080", nil); err != nil {
 		fmt.Println("Server error:", err)
 	}
 }
@@ -316,6 +374,7 @@ func pageHandler() {
 	http.HandleFunc("/main/", authMiddleware(mainPage))
 	http.HandleFunc("/upload-track/", authMiddleware(uploadTrack))
 	http.HandleFunc("/logout/", logout) // Добавляем обработчик выхода
+	http.HandleFunc("/support/", supportHandler)
 }
 
 func staticFileLoader() {

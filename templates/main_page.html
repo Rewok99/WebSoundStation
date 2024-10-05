@@ -79,6 +79,8 @@
   </div>
 </div>
 
+
+
 <footer>
   <div class="blocks container">
     <div>
@@ -88,7 +90,7 @@
     <div>
       <h4>О нас</h4>
       <p>Услуги</p>
-      <p>Предложения</p>
+      <a href="#" id="openFaqModal">FAQ</a>
     </div>
     <div>
       <h4>Контакты</h4>
@@ -123,10 +125,30 @@
       <label for="cloud_storage_url">Ссылка на облачное хранилище</label>
       <input type="url" id="cloud_storage_url" name="cloud_storage_url" title="Вставьте ссылку на файл в облаке" required>
 
+      <!-- Выбор площадок для дистрибуции -->
+      <label for="distribution_platforms">Площадки для дистрибуции</label>
+      <textarea id="distribution_platforms" name="distribution_platforms" readonly placeholder="Выберите площадки" onclick="toggleCheckboxes()"></textarea>
+
+      <div id="platform_checkboxes" class="checkboxes">
+        <input type="checkbox" id="spotify" name="platforms" value="Spotify" onclick="updateTextarea()">
+        <label for="spotify">Spotify</label><br>
+        <input type="checkbox" id="apple_music" name="platforms" value="Apple Music" onclick="updateTextarea()">
+        <label for="apple_music">Apple Music</label><br>
+        <input type="checkbox" id="youtube_music" name="platforms" value="YouTube Music" onclick="updateTextarea()">
+        <label for="youtube_music">YouTube Music</label><br>
+        <input type="checkbox" id="tiktok" name="platforms" value="TikTok" onclick="updateTextarea()">
+        <label for="tiktok">TikTok</label>
+        <input type="checkbox" id="vk_music" name="platforms" value="VK Music" onclick="updateTextarea()">
+        <label for="vk_music">VK Music</label>
+        <input type="checkbox" id="yandex_music" name="platforms" value="Яндекс.Музыка" onclick="updateTextarea()">
+        <label for="yandex_music">Яндекс.Музыка</label>
+      </div>
+
       <button type="submit" class="btn">Загрузить</button>
     </form>
   </div>
 </div>
+
 
 <!-- Модальное окно для поддержки -->
 <div id="supportModal" class="modal">
@@ -149,6 +171,49 @@
 </div>
 
 
+<!-- Модальное окно для FAQ -->
+<div id="faqModal" class="faqModal">
+  <div class="faqModal-content">
+    <span class="close">&times;</span>
+    <h3>Часто задаваемые вопросы</h3>
+
+    <!-- Вопрос 1 -->
+    <div class="faq-item">
+      <button class="accordion">Можно ли удалить релиз с площадок?<span class="arrow">&#9660;</span></button>
+      <div class="panel">
+        <p>Да. Для этого вы можете обратиться в поддержку.</p>
+      </div>
+    </div>
+
+    <!-- Вопрос 2 -->
+    <div class="faq-item">
+      <button class="accordion">Как понять, что мой релиз одобрен?<span class="arrow">&#9660;</span></button>
+      <div class="panel">
+        <p>Когда Вы загружаете релиз, он уходит к нам на модерацию. Мы всё проверяем и можем отклонить релиз, написав причину и отправив на доработку. Если релиз одобрен, в таблице будет статус "Опубликовано".</p>
+      </div>
+    </div>
+
+    <!-- Вопрос 3 -->
+    <div class="faq-item">
+      <button class="accordion">Сколько длится модерация?<span class="arrow">&#9660;</span></button>
+      <div class="panel">
+        <p>Модерация делается до 3-х рабочих дней.</p>
+      </div>
+    </div>
+
+    <!-- Вопрос 4 -->
+    <div class="faq-item">
+      <button class="accordion">Как я могу изменить релиз?<span class="arrow">&#9660;</span></button>
+      <div class="panel">
+        <p>Если вы допустили ошибку или хотите изменить что-то в релизе вы можете обратиться в поддержку.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
 
 
 
@@ -168,12 +233,6 @@
     uploadModal.style.display = 'none';
   }
 
-  // Когда пользователь кликает за пределами модального окна, закрываем его
-  window.onclick = function(event) {
-    if (event.target == uploadModal) {
-      uploadModal.style.display = 'none';
-    }
-  }
 
   // Получаем элементы
   const supportModal = document.getElementById('supportModal');
@@ -191,12 +250,6 @@
     supportModal.style.display = 'none';
   }
 
-  // Когда пользователь кликает за пределами модального окна, закрываем его
-  window.onclick = function(event) {
-    if (event.target == supportModal) {
-      supportModal.style.display = 'none';
-    }
-  }
 
   // Обработчик отправки формы поддержки
   document.getElementById('supportForm').addEventListener('submit', function (event) {
@@ -260,8 +313,105 @@
   };
 
 
+  // Функция для показа/скрытия чекбоксов
+  function toggleCheckboxes() {
+    const checkboxes = document.getElementById("platform_checkboxes");
+    checkboxes.classList.toggle("show-checkboxes");
+  }
+
+  // Функция для обновления textarea с выбранными значениями
+  function updateTextarea() {
+    const checkboxes = document.querySelectorAll("#platform_checkboxes input[type=checkbox]");
+    const selectedPlatforms = [];
+
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked) {
+        selectedPlatforms.push(checkbox.value);
+      }
+    });
+
+    document.getElementById("distribution_platforms").value = selectedPlatforms.join(", ");
+  }
+
+  // Открытие и закрытие модального окна FAQ
+  const faqModal = document.getElementById("faqModal");
+  const openFaqModalLink = document.getElementById("openFaqModal");
+  const closeFaqModal = faqModal.querySelector(".close");
+
+  // Открыть модальное окно при клике на ссылку в подвале
+  openFaqModalLink.onclick = function(event) {
+    event.preventDefault(); // Предотвращаем переход по ссылке
+    faqModal.style.display = "block";
+  }
+
+  // Закрыть модальное окно при клике на крестик
+  closeFaqModal.onclick = function() {
+    faqModal.style.display = "none";
+  }
+
+
+  // Логика аккордеона для раскрытия ответов
+  const accordions = document.querySelectorAll(".accordion");
+
+  accordions.forEach(function(accordion) {
+    accordion.addEventListener("click", function() {
+      // Переключение между скрытием и отображением панели
+      const panel = this.nextElementSibling;
+      const arrow = this.querySelector(".arrow");
+
+      // Закрыть все другие панели (чтобы был один открытый вопрос)
+      accordions.forEach(function(otherAccordion) {
+        if (otherAccordion !== accordion) {
+          otherAccordion.nextElementSibling.style.display = "none";
+          otherAccordion.querySelector(".arrow").style.transform = "rotate(0deg)";
+        }
+      });
+
+      // Переключить состояние текущего аккордеона
+      if (panel.style.display === "block") {
+        panel.style.display = "none";
+        arrow.style.transform = "rotate(0deg)";
+      } else {
+        panel.style.display = "block";
+        arrow.style.transform = "rotate(180deg)";
+      }
+    });
+  });
+
+
+  document.getElementById('supportForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Отменяем стандартное поведение формы
+
+    // Получаем данные из формы
+    const name = document.getElementById('support_name').value;
+    const email = document.getElementById('support_email').value;
+    const message = document.getElementById('support_message').value;
+
+    // Отправляем данные на сервер
+    fetch('/support', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, message }),
+    })
+            .then(response => response.json())
+            .then(data => {
+              // Показываем сообщение об успехе или ошибке
+              const responseMessage = document.getElementById('responseMessage');
+              responseMessage.style.display = 'block';
+              responseMessage.innerText = data.message;
+
+            })
+            .catch(error => {
+              console.error('Ошибка:', error);
+            });
+    // Закрываем модальное окно
+    const modal = document.getElementById('supportModal');
+    modal.style.display = 'none';
+  });
+
+
 </script>
-
-
 </body>
 </html>
