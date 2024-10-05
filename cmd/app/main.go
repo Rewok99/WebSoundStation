@@ -292,8 +292,8 @@ func sendEmail(from, replyTo, subject, body string) error {
 	// Настройки SMTP
 	smtpHost := "smtp.gmail.com" //SMTP-сервер
 	smtpPort := "587"
-	smtpUser := "g.erapuff@gmail.com" // почта
-	smtpPass := "zjmo wvce agcd tccd" // пароль
+	smtpUser := "" // почта
+	smtpPass := "" // пароль
 
 	to := "soundstation78@gmail.com"
 
