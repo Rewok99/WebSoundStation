@@ -91,6 +91,13 @@ header nav ul li.btn a:hover{
     background: #5a189a;
 }
 
+
+
+.arrow1 {
+    animation: slide1 1s ease-in-out infinite;
+    margin-left: 9px;
+}
+
 .hero{
     padding-bottom: 100px;
     position: relative;
@@ -126,6 +133,8 @@ header nav ul li.btn a:hover{
 
 .hero-info .btn{
     background: #9d4edd;
+    display: flex;
+    justify-content: space-between;
     color: #ffffff;
     border-radius: 50px;
     padding: 15px 30px;
@@ -135,11 +144,18 @@ header nav ul li.btn a:hover{
     z-index: 2;
     position: relative;
 }
+.icon {
+    margin-left: 5px;
+    fill: #fff;
+
+}
+
 
 .hero-info .btn:hover{
     cursor: pointer;
     transform: scale(1.1);
 }
+
 
 .hero img{
     position: absolute;

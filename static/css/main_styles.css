@@ -486,13 +486,13 @@ table a:hover {
     background-color: #9d4edd;
 }
 
-/* Стили для стрелки */
+
 .accordion .arrow {
     font-size: 16px;
     transition: transform 0.3s ease;
 }
 
-/* Стили для панели с ответами (изначально скрыта) */
+
 .panel {
     padding: 0 18px;
     background-color: white;

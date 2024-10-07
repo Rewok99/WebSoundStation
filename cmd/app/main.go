@@ -92,6 +92,19 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func termsPage(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/terms.html")
+	if err != nil {
+		http.Error(w, "Ошибка при загрузке шаблона", http.StatusInternalServerError)
+		return
+	}
+
+	// Передаем в шаблон информацию о том, выполнен ли вход
+	tmpl.Execute(w, map[string]interface{}{
+		"IsLoggedIn": sessionID != 0, // Если sessionID не равен 0, то пользователь авторизован
+	})
+}
+
 func loginPage(w http.ResponseWriter, r *http.Request) {
 	var errorMsg string
 
@@ -125,11 +138,16 @@ func loginPage(w http.ResponseWriter, r *http.Request) {
 
 func regPage(w http.ResponseWriter, r *http.Request) {
 	var errorMsg string
+	var termsAccepted bool
 
 	if r.Method == http.MethodPost {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		confirmPassword := r.FormValue("confirm_password")
+		if r.FormValue("accept_terms") == "on" {
+			// Принятие соглашения
+			termsAccepted = true
+		}
 
 		log.Println("Регистрация: email =", email)
 
@@ -141,6 +159,10 @@ func regPage(w http.ResponseWriter, r *http.Request) {
 			// Проверка совпадения паролей
 			errorMsg = "Пароли не совпадают"
 			log.Println("Ошибка: пароли не совпадают")
+		} else if termsAccepted != true {
+			// Проверка совпадения паролей
+			errorMsg = "Не принято соглашение!"
+			log.Println("Ошибка: Не принято соглашение")
 		} else {
 			// Хеширование пароля
 			hashedPassword, err := hashPassword(password)
@@ -149,7 +171,7 @@ func regPage(w http.ResponseWriter, r *http.Request) {
 				log.Println("Ошибка при хешировании пароля:", err)
 			} else {
 				// Создание пользователя
-				err = createUser(email, hashedPassword)
+				err = createUser(email, hashedPassword, termsAccepted)
 				if err != nil {
 					errorMsg = fmt.Sprintf("Ошибка при регистрации: %v", err)
 					log.Println("Ошибка при создании пользователя:", err)
@@ -175,7 +197,7 @@ func regPage(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func createUser(email, hashedPassword string) error {
+func createUser(email, hashedPassword string, termsAccepted bool) error {
 	// Проверка существования пользователя
 	var exists bool
 	err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE email=$1)", email).Scan(&exists)
@@ -190,7 +212,7 @@ func createUser(email, hashedPassword string) error {
 
 	// Попытка вставки нового пользователя
 	log.Println("Попытка добавить пользователя:", email)
-	result, err := db.Exec("INSERT INTO users (email, password) VALUES ($1, $2)", email, hashedPassword)
+	result, err := db.Exec("INSERT INTO users (email, password, terms) VALUES ($1, $2, $3)", email, hashedPassword, termsAccepted)
 	if err != nil {
 		log.Println("Ошибка при вставке пользователя:", err)
 		return err
@@ -292,8 +314,8 @@ func sendEmail(from, replyTo, subject, body string) error {
 	// Настройки SMTP
 	smtpHost := "smtp.gmail.com" //SMTP-сервер
 	smtpPort := "587"
-	smtpUser := "" // почта
-	smtpPass := "" // пароль
+	smtpUser := "g.erapuff@gmail.com" // почта
+	smtpPass := ""                    // пароль
 
 	to := "soundstation78@gmail.com"
 
@@ -375,6 +397,7 @@ func pageHandler() {
 	http.HandleFunc("/upload-track/", authMiddleware(uploadTrack))
 	http.HandleFunc("/logout/", logout) // Добавляем обработчик выхода
 	http.HandleFunc("/support/", supportHandler)
+	http.HandleFunc("/terms/", termsPage)
 }
 
 func staticFileLoader() {
