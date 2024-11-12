@@ -315,7 +315,7 @@ func sendEmail(from, replyTo, subject, body string) error {
 	smtpHost := "smtp.gmail.com" //SMTP-сервер
 	smtpPort := "587"
 	smtpUser := "g.erapuff@gmail.com" // почта
-	smtpPass := ""                    // пароль
+	smtpPass := "njlc kdsh ispx rkpy" // пароль
 
 	to := "soundstation78@gmail.com"
 

@@ -100,22 +100,30 @@
         </div>
     </div>
     </a>
+
+
     <a id="services">
-    <div class="wrapper">
-       <div class="container services">
-           <h3>Услуги</h3>
-           <div class="images">
-               <img src="../static/image/serv01.png" alt="">
-               <img src="../static/image/serv2.png" alt="">
-               <img src="../static/image/serv03.png" alt="">
-           </div>
-           <div class="images">
-               <img src="../static/image/serv04.png" alt="">
-               <img src="../static/image/serv05.png" alt="">
-               <img src="../static/image/serv06.png" alt="">
-           </div>
-       </div>
-    </div>
+        <div class="wrapper">
+            <div class="container services">
+                <h3>Услуги</h3>
+                <div class="slider">
+                    <div class="slide">
+                        <img src="../static/image/serv01.png" alt="Slide 1">
+                        <img src="../static/image/serv02.png" alt="Slide 2">
+                        <img src="../static/image/serv03.png" alt="Slide 3">
+                        <img src="../static/image/serv04.png" alt="Slide 4">
+                        <img src="../static/image/serv05.png" alt="Slide 5">
+                        <img src="../static/image/serv06.png" alt="Slide 6">
+                    </div>
+                    <div class="slider-controls">
+                        <span class="arrow prev">&#10094;</span>
+                        <span class="arrow next">&#10095;</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </a>
 
     <footer>
@@ -180,7 +188,8 @@
         </div>
     </div>
 
-<script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
     // Открытие и закрытие модального окна FAQ
     const faqModal = document.getElementById("faqModal");
     const openFaqModalLink = document.getElementById("openFaqModal");
@@ -225,8 +234,55 @@
             }
         });
     });
+
+    $(document).ready(function() {
+        let currentIndex = 0;
+        const slides = $(".slide img");
+        const totalSlides = slides.length;
+
+        function showSlide(index) {
+            const slideWidth = slides.eq(0).width();
+            $('.slide').css('transform', `translateX(${-index * slideWidth}px)`);
+        }
+
+        // Автоматическая смена слайдов каждые 3 секунды
+        let autoSlide = setInterval(function() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+        }, 3000);
+
+        // Обработка кликов на стрелки
+        $('.prev').on('click', function() {
+            currentIndex = (currentIndex === 0) ? totalSlides - 1 : currentIndex - 1;
+            showSlide(currentIndex);
+            resetAutoSlide();
+        });
+
+        $('.next').on('click', function() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+            resetAutoSlide();
+        });
+
+        // Функция для перезапуска автоматического слайдера после ручного переключения
+        function resetAutoSlide() {
+            clearInterval(autoSlide);
+            autoSlide = setInterval(function() {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                showSlide(currentIndex);
+            }, 3000);
+        }
+
+        // Отключение автопрокрутки при наведении на слайдер
+        $('.slider').on('mouseenter', function() {
+            clearInterval(autoSlide);
+        });
+
+        $('.slider').on('mouseleave', function() {
+            resetAutoSlide();
+        });
+    });
+    
 </script>
-
-
 </body>
 </html>
